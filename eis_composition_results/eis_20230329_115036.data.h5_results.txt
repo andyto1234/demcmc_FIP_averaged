@@ -1,0 +1,9 @@
+Results for EIS Event: eis_20230329_115036.data.h5
+
+Region 1: FIP ratio = 1.8832590423642526, Chi-squared = 15.90959033912366
+Region 2: FIP ratio = 2.152670998068242, Chi-squared = 22.087470215521016
+Region 3: FIP ratio = 1.674028528158436, Chi-squared = 14.781732042716252
+Region 4: FIP ratio = 2.1694370329123265, Chi-squared = 31.931256544288644
+Region 5: FIP ratio = 1.645065825656502, Chi-squared = 22.397105591431476
+Region 6: FIP ratio = 1.514526171259506, Chi-squared = 21.648568157521726
+

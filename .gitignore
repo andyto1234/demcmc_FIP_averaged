@@ -5,6 +5,5 @@
 /config.txt
 /data_eis
 .gitignore
-.gitignore
 eis_composition_results/*
 eis_composition_results/eis_20230329_132600.data.h5_results.txt

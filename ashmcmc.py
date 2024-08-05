@@ -81,7 +81,6 @@ class ashmcmc:
         # Returns a map array of intensities
 
         Lines, dim, dem_num = self.check_existing_lines() # Check existing lines
-
         Intensities = np.zeros((int(dim[0]), int(dim[1]), dem_num))    
         Int_error = np.zeros((int(dim[0]), int(dim[1]), dem_num))    
         print(f'------------------------------Found {dem_num} usable lines------------------------------')

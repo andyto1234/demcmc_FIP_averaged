@@ -71,11 +71,8 @@ class asheis:
             "s_11_188.68" : ["s__11_188_675.3c.template.h5",1],
             "s_13_256.69" : ["s__13_256_686.1c.template.h5",0],
         }
-        
-        if platform.system() == "Linux":
-            self.dens_dir = '/disk/solar17/st3/density'
-        elif platform.system() == "Darwin":
-            self.dens_dir = '/Users/andysh.to/Script/idl_code/density'
+
+        self.dens_dir = 'eis_density/'
 
 
     def check_window(self, line):

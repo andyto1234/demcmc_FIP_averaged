@@ -72,7 +72,7 @@ def eis_averaged_fip(eis_evt, r1_bl_crd, r1_tr_crd):
     eis_cube = asheis(eis_evt)
     ash = ashmcmc(eis_evt)
     Lines, dim, dem_num = ash.check_existing_lines()
-    dict = eis_cube.dict
+    dict = eis_cube.dict 
 
     # Process emission lines
     Intensity = np.array([process_line(line, dict, eis_evt, r1_bl_crd, r1_tr_crd) for line in Lines])
@@ -88,9 +88,13 @@ def eis_averaged_fip(eis_evt, r1_bl_crd, r1_tr_crd):
     # Prepare MCMC
     logt, emis, linenames = ash.read_emissivity(ldens)
     logt_interp = interp_emis_temp(logt.value)
+    
+    # Limit the logt range to 5.2 < logt < 7.2
+    mask = (np.log10(logt_interp) > 5.2) & (np.log10(logt_interp) < 7.2)
+    logt_interp = logt_interp[mask]
     temp_bins = TempBins(logt_interp * u.K)
-    emis_sorted = ash.emis_filter(emis, linenames, Lines)
-
+    
+    emis_sorted = ash.emis_filter(emis[:, mask], linenames, Lines)
     # Create MCMC lines
     mcmc_lines = []
     for ind, line in enumerate(Lines):
@@ -142,8 +146,16 @@ def eis_averaged_fip(eis_evt, r1_bl_crd, r1_tr_crd):
     return fip_ratio, mcmc_lines, chi2
 
 if __name__ == "__main__":
+    from useful_packages.align_aia_EIS import alignment
+
     eis_evts = sorted(glob.glob('/Users/andysh.to/Script/Python_Script/demcmc_FIP_averaged/data_eis/*.data.h5'))
     eis_evt = eis_evts[0]
     r1_bl_crd = [216.88862131045445, -210.08356892192884]
     r1_tr_crd = [220.8914582334983, -206.08513765573548]
+    eis_map = alignment(eis_evt, return_shift=True)
+
+    # Subtract the shift to get coordinates in the original, unshifted map
+    new_r1_bl_crd = [r1_bl_crd[0] - eis_map.Txshift, r1_bl_crd[1] - eis_map.Tyshift]
+    new_r1_tr_crd = [r1_tr_crd[0] - eis_map.Txshift, r1_tr_crd[1] - eis_map.Tyshift]
+    
     fip_ratio, mcmc_lines, chi2 = eis_averaged_fip(eis_evt, r1_bl_crd, r1_tr_crd)

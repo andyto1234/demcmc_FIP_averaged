@@ -152,10 +152,10 @@ if __name__ == "__main__":
     eis_evt = eis_evts[0]
     r1_bl_crd = [216.88862131045445, -210.08356892192884]
     r1_tr_crd = [220.8914582334983, -206.08513765573548]
-    eis_map = alignment(eis_evt, return_shift=True)
+    eis_map, Txshift, Tyshift = alignment(eis_evt, return_shift=True)
 
     # Subtract the shift to get coordinates in the original, unshifted map
-    new_r1_bl_crd = [r1_bl_crd[0] - eis_map.Txshift, r1_bl_crd[1] - eis_map.Tyshift]
-    new_r1_tr_crd = [r1_tr_crd[0] - eis_map.Txshift, r1_tr_crd[1] - eis_map.Tyshift]
-    
-    fip_ratio, mcmc_lines, chi2 = eis_averaged_fip(eis_evt, r1_bl_crd, r1_tr_crd)
+    new_r1_bl_crd = [r1_bl_crd[0] - Txshift, r1_bl_crd[1] - Tyshift]
+    new_r1_tr_crd = [r1_tr_crd[0] - Txshift, r1_tr_crd[1] - Tyshift]
+
+    fip_ratio, mcmc_lines, chi2 = eis_averaged_fip(eis_evt, new_r1_bl_crd, new_r1_tr_crd)

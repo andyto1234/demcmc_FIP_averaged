@@ -28,20 +28,20 @@ def average_spectral_data(data_cube, tmplt, lower_left, upper_right, shift2fexii
     """
 
     eis_frame = wcs_to_celestial_frame(data_cube.wcs)
-    print(eis_frame)
     
+    wavelength_average = np.nanmean(data_cube.wavelength, axis=(0, 1))
+
     if shift2fexii:
-        this_wave = np.mean(tmplt.template['data_x'])
+        this_wave = np.mean(wavelength_average)
         disp = ccd_offset(ref_wave) - ccd_offset(this_wave)
         print(f'SHIFT2WAVE: shifted to {ref_wave} FOV according to CCD offset - OFFSET: {disp[0]:.1f}')
     else:
         disp = 0
-    
-    print(f"old bottom ty: {lower_left[1]}")
-    print(f"new bottom ty: {lower_left[1]-disp[0]}")
-    lower_left = [SpectralCoord(min(tmplt.template['data_x']), unit=u.angstrom),
+
+
+    lower_left = [SpectralCoord(min(wavelength_average), unit=u.angstrom),
                   SkyCoord(Tx=lower_left[0], Ty=int(lower_left[1]-disp[0]), unit=u.arcsec, frame=eis_frame)]
-    upper_right = [SpectralCoord(max(tmplt.template['data_x']), unit=u.AA),
+    upper_right = [SpectralCoord(max(wavelength_average), unit=u.angstrom),
                    SkyCoord(Tx=upper_right[0], Ty=int(upper_right[1]-disp[0]), unit=u.arcsec, frame=eis_frame)]
     
 
